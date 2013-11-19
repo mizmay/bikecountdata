@@ -10,7 +10,10 @@ names(Telegraph66th)[3] <- "count"
 
 # Boxplot of all bike counts by hour
 ggplot(Telegraph66th,(aes(x=X,y=count))) + geom_boxplot() + 
-  scale_y_continuous(limits = c(0, 85)) + theme_minimal()
+  # remove outlier: 181 bikes at 3 am?
+  scale_y_continuous(limits = c(0, 85),"Bike Count") + theme_minimal() + 
+  scale_x_discrete("Time of Day") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # Hourly averages by month
 hours <- as.character(unique(Telegraph66th$X))
@@ -39,8 +42,8 @@ xlabels[-mondays] <- "" # Only label dates on Mondays
 ggplot(subset(Telegraph66th,count < 100),(aes(x=x,y=y))) + 
   geom_vline(xintercept = mondays,color='gray') + 
   geom_tile(alpha=0.6,aes(fill=count)) + 
-  scale_fill_gradient(low="transparent", high="blue") + 
+  scale_fill_gradient(low="transparent", high="darkgreen") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_y_discrete("Time of Day", labels=ylabels) +
+  scale_y_continuous("Time of Day", labels=ylabels,breaks=0:23) +
   scale_x_discrete("Date",labels=xlabels)
 
